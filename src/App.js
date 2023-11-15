@@ -4,6 +4,7 @@ import PurchaseForm from './PurchaseForm';
 import UserPurchases from './UserPurchases';
 import UpdatePurchaseForm from './UpdatePurchaseForm';
 import DeletePurchaseButton from './DeletePurchaseButton';
+import UserInfo from "./UserInfo";
 
 function App() {
     const [userId, setUserId] = useState('');
@@ -23,8 +24,10 @@ function App() {
                 onChange={(e) => setUserId(e.target.value)}
                 placeholder="Enter User ID"
             />
-            <PurchaseForm userId={userId} onPurchaseCreated={handleActionComplete} />
+            <UserInfo userId={userId} refresh = {refresh} />
             <UserPurchases userId={userId} refresh={refresh} />
+            <PurchaseForm userId={userId} onPurchaseCreated={handleActionComplete} />
+
             <input
                 type="text"
                 value={purchaseId}
