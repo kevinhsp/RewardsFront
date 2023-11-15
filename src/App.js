@@ -1,46 +1,38 @@
 import React, { useState } from 'react';
+import CreateUserForm from './CreateUserForm';
 import PurchaseForm from './PurchaseForm';
 import UserPurchases from './UserPurchases';
-import YearMonthPurchases from './YearMonthPurchases';
-// 假设还有其他组件，比如 UpdatePurchaseForm 和 DeletePurchaseButton
+import UpdatePurchaseForm from './UpdatePurchaseForm';
+import DeletePurchaseButton from './DeletePurchaseButton';
 
 function App() {
     const [userId, setUserId] = useState('');
-    const [year, setYear] = useState(new Date().getFullYear().toString());
-    const [month, setMonth] = useState((new Date().getMonth() + 1).toString());
+    const [purchaseId, setPurchaseId] = useState('');
     const [refresh, setRefresh] = useState(false);
 
-    const refreshPurchases = () => {
+    const handleActionComplete = () => {
         setRefresh(prev => !prev);
     };
 
     return (
         <div className="App">
-            <h2>User Information</h2>
+            <CreateUserForm onUserCreated={handleActionComplete} />
             <input
                 type="text"
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
                 placeholder="Enter User ID"
             />
-            <h2>Create Purchase</h2>
-            <PurchaseForm userId={userId} onPurchaseCreated={refreshPurchases} />
-            <h2>User Purchases</h2>
+            <PurchaseForm userId={userId} onPurchaseCreated={handleActionComplete} />
             <UserPurchases userId={userId} refresh={refresh} />
-            <h2>Purchases in Specific Month</h2>
             <input
                 type="text"
-                value={year}
-                onChange={(e) => setYear(e.target.value)}
-                placeholder="Year"
+                value={purchaseId}
+                onChange={(e) => setPurchaseId(e.target.value)}
+                placeholder="Enter Purchase ID for Update/Delete"
             />
-            <input
-                type="text"
-                value={month}
-                onChange={(e) => setMonth(e.target.value)}
-                placeholder="Month"
-            />
-            <YearMonthPurchases userId={userId} year={year} month={month} />
+            <UpdatePurchaseForm userId={userId} purchaseId={purchaseId} onActionComplete={handleActionComplete} />
+            <DeletePurchaseButton userId={userId} purchaseId={purchaseId} onActionComplete={handleActionComplete} />
         </div>
     );
 }

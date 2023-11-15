@@ -1,26 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const PurchaseForm = ({ userId }) => {
+const UpdatePurchaseForm = ({ userId, purchaseId, onActionComplete }) => {
     const [purchase, setPurchase] = useState({ price: '', date: '' });
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!userId) {
-            setErrorMessage('Invalid User ID');
-            return;
-        }
         try {
-            await axios.post(`http://localhost:8088/${userId}/purchase`, purchase);
+            await axios.put(`http://localhost:8088/${userId}/purchaseUpdate/${purchaseId}`, purchase);
+            alert(`Purchase Updated!\nPrice: ${purchase.price}\nDate: ${purchase.date}`)
             setErrorMessage('');
-            alert(`Purchase created!\nPrice: ${purchase.price}\nDate: ${purchase.date}`);            setPurchase({ price: '', date: '' });
+            onActionComplete();
         } catch (error) {
-            if (error.response && error.response.status === 404) {
-                setErrorMessage('Resource not found');
-            } else {
-                setErrorMessage('An error occurred');
-            }
+            setErrorMessage('An error occurred');
         }
     };
 
@@ -45,11 +38,11 @@ const PurchaseForm = ({ userId }) => {
                     value={purchase.date}
                     onChange={handleChange}
                 />
-                <button type="submit">Create Purchase</button>
+                <button type="submit">Update Purchase</button>
             </form>
             {errorMessage && <div className="error-message">{errorMessage}</div>}
         </div>
     );
 };
 
-export default PurchaseForm;
+export default UpdatePurchaseForm;

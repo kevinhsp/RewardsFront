@@ -36,6 +36,7 @@ const YearMonthPurchases = ({ userId, year, month }) => {
                 <table>
                     <thead>
                     <tr>
+                        <th>Id</th>
                         <th>Date</th>
                         <th>Price</th>
                         <th>Points</th>
@@ -44,6 +45,7 @@ const YearMonthPurchases = ({ userId, year, month }) => {
                     <tbody>
                     {purchases.map((purchase, index) => (
                         <tr key={index}>
+                            <td>{purchase.id}</td>
                             <td>{purchase.date}</td>
                             <td>{"$" + purchase.price}</td>
                             <td>{purchase.points}</td>
